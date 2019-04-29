@@ -35,7 +35,7 @@ namespace MVCTimeSheet.Controllers
         }
 
 
-        public IEnumerable<TimeDetails> GetTimeDetails()
+        public IEnumerable<TimeDetails> GetTimeDetails(string code)
         {
             IEnumerable<TimeDetails> timeDetails = null;
             using (var client = new HttpClient())
@@ -43,8 +43,8 @@ namespace MVCTimeSheet.Controllers
                 client.BaseAddress = new Uri("https://localhost:44391/");
 
 
-                //string url = "api/TimeDetails/68319";
-                string url = "api/TimeDetails/" /* "67832";*/;
+                string url = "api/TimeDetails/" + code;
+                
                     var responseTask = client.GetAsync(url);
                     responseTask.Wait();
                 
@@ -68,11 +68,11 @@ namespace MVCTimeSheet.Controllers
             IEnumerable<Employee> emps = GetAllEmployees();
             return View(emps);
         }
-
-        public ActionResult TimeSheet( )
+        
+        public ActionResult TimeSheet( string code)
         {
-            IEnumerable<TimeDetails> ts = GetTimeDetails();
             
+            IEnumerable<TimeDetails> ts = GetTimeDetails(code);
             return View(ts);
         }
         // GET: TimeDetail/Details/5
